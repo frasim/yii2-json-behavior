@@ -18,6 +18,11 @@ class JsonBehavior extends Behavior
      * @var null|string
      */
     public $emptyValue;
+    
+    /**
+     * @var boolean
+     */
+    public $onlyArray = true;
 
 
     /**
@@ -42,7 +47,7 @@ class JsonBehavior extends Behavior
     protected function initialization()
     {
         foreach ($this->attributes as $attribute) {
-            $this->owner->setAttribute($attribute, new JsonField());
+            $this->owner->setAttribute($attribute, new JsonField(null, $this->onlyArray));
         }
     }
 
@@ -53,7 +58,7 @@ class JsonBehavior extends Behavior
         foreach ($this->attributes as $attribute) {
             $value = $this->owner->getAttribute($attribute);
             if (!$value instanceof JsonField) {
-                $value = new JsonField($value);
+                $value = new JsonField($value, $this->onlyArray);
             }
             $this->owner->setAttribute($attribute, $value);
         }
@@ -66,7 +71,7 @@ class JsonBehavior extends Behavior
         foreach ($this->attributes as $attribute) {
             $field = $this->owner->getAttribute($attribute);
             if (!$field instanceof JsonField) {
-                $field = new JsonField($field);
+                $field = new JsonField($field, $this->onlyArray);
             }
             $this->owner->setAttribute($attribute, (string)$field ?: $this->emptyValue);
         }
