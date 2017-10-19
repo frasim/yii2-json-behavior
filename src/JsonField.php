@@ -11,13 +11,18 @@ class JsonField implements \ArrayAccess, Arrayable
      * @var array
      */
     protected $value;
-
+    
+    /**
+     * @var boolean
+     */
+    public $onlyArray = true;
 
     /**
      * @param string|array $value
      */
-    public function __construct($value = [])
+    public function __construct($value = [], $onlyArray = true)
     {
+        $this->onlyArray = $onlyArray;
         $this->set($value);
     }
 
@@ -38,11 +43,11 @@ class JsonField implements \ArrayAccess, Arrayable
             $value = [];
         } elseif (is_string($value)) {
             $value = Json::decode($value, true);
-            if (!is_array($value)) {
+            if ($this->onlyArray && !is_array($value)) {
                 throw new InvalidParamException('Value is scalar');
             }
         }
-        if (!is_array($value)) {
+        if ($this->onlyArray && !is_array($value)) {
             throw new InvalidParamException('Value is not array');
         } else {
             $this->value = $value;
