@@ -20,7 +20,7 @@ class JsonValidator extends Validator
         $value = $model->$attribute;
         if (!$value instanceof JsonField) {
             try {
-                $new = new JsonField($value);
+                $new = new JsonField($value, $this->onlyArray);
                 if ($this->merge) {
                     /** @var BaseActiveRecord $model */
                     $old = new JsonField($model->getOldAttribute($attribute));
