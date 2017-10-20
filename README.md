@@ -42,6 +42,7 @@ class Item extends \yii\db\ActiveRecord
             [
                 'class' => JsonBehavior::className(),
                 'attributes' => ['params'],
+                //'onlyArray' => false
             ],
         ];
     }
@@ -117,6 +118,7 @@ class Item extends \yii\db\ActiveRecord
     public function rules() {
         return [
             [['params'], JsonValidator::className()],
+            //[['params'], JsonValidator::className(), 'onlyArray' => false],
         ];
     }
 }
