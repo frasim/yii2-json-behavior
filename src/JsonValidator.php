@@ -11,6 +11,11 @@ class JsonValidator extends Validator
      * @var bool
      */
     public $merge = false;
+    
+    /**
+     * @var bool
+     */
+    public $onlyArray = true;
 
     /**
      * @inheritdoc
@@ -23,8 +28,8 @@ class JsonValidator extends Validator
                 $new = new JsonField($value, $this->onlyArray);
                 if ($this->merge) {
                     /** @var BaseActiveRecord $model */
-                    $old = new JsonField($model->getOldAttribute($attribute));
-                    $new = new JsonField(array_merge($old->toArray(), $new->toArray()));
+                    $old = new JsonField($model->getOldAttribute($attribute), $this->onlyArray);
+                    $new = new JsonField(array_merge($old->toArray(), $new->toArray()), $this->onlyArray);
                 }
                 $model->$attribute = $new;
             } catch (InvalidParamException $e) {
